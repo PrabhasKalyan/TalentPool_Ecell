@@ -97,10 +97,19 @@ def home(request):
     all_profiles = sorted(all_profiles)
     all_orgs = sorted(all_orgs)
 
+
+    locs = set()
+    for intern in interns:
+        loc = getattr(intern,'location')
+        locs.add(loc)
+
+    all_locs=sorted(locs)
+
     context = {
         'Faculties': interns[:3],
         'research_areas': all_profiles,
         'colleges': all_orgs,
+        'locs':locs
     }
     
     return render(request, 'faculty/home.html', context)
