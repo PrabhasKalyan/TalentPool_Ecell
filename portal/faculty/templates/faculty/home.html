@@ -140,7 +140,7 @@
                                         {% for loc in locs %}
                                             {% with loc_without_quotes=loc|cut:"'" %}
                                                 <div role="listitem" class="category-item w-dyn-item">
-                                                    <a href="/search?area={{ area_without_quotes }}" class="text-100 text-link">{{ loc }}</a>
+                                                    <a href="/search?loc={{ loc_without_quotes }}" class="text-100 text-link">{{ loc }}</a>
                                                 </div>
                                             {% endwith %}
                                         {% endfor %}                                    
@@ -159,10 +159,10 @@
                                  <div class="card style-2" style="max-height: 400px; overflow-y: scroll;">
                                     <div class="w-dyn-list">
                                        <div role="list" class="grid-1-column w-dyn-items">
-                                        {% for area in research_areas %}
+                                        {% for area in profiles %}
                                             {% with area_without_quotes=area|cut:"'" %}
                                                 <div role="listitem" class="category-item w-dyn-item">
-                                                    <a href="/search?area={{ area_without_quotes }}" class="text-100 text-link">{{ area }}</a>
+                                                    <a href="/search?profile={{ area_without_quotes }}" class="text-100 text-link">{{ area }}</a>
                                                 </div>
                                             {% endwith %}
                                         {% endfor %}                                    
@@ -174,17 +174,17 @@
                            <div data-hover="true" data-delay="0" class="dropdown-category w-dropdown">
                               <div class="dropdown-category-toggle w-dropdown-toggle">
                                  <div class="dropdown-category-icon"></div>
-                                 <div class="dropdown-category-text">Organisation</div>
+                                 <div class="dropdown-category-text">Work Mode</div>
                                  <div class="dropdown-category-arrow"></div>
                               </div>
                               <nav class="filters-dropdown-list w-dropdown-list">
                                  <div class="card style-2" style="max-height: 400px; overflow-y: scroll;">
                                     <div class="w-dyn-list">
                                        <div role="list" class="grid-1-column w-dyn-items" style="max-height: 250px; overflow-y: scroll;">
-                                          {% for college in colleges %}
+                                          {% for mode in modes %}
                                           <div role="listitem" class="category-item w-dyn-item">
-                                            {% with college_without_quotes=college|cut:"'" %}
-                                                <a href="/search?university={{ college_without_quotes }}" class="text-100 text-link">{{ college }}</a>
+                                            {% with mode_without_quotes=mode|cut:"'" %}
+                                                <a href="/search?work_mode={{ mode_without_quotes }}" class="text-100 text-link">{{ mode }}</a>
                                             {% endwith %}
                                           </div>
                                           {% endfor %}

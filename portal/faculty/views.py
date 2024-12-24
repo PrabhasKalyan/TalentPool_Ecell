@@ -22,28 +22,34 @@ def blog5(request):
 
 
 def search(request):
-    query = request.GET.get('query', None)
-    university = request.GET.get('org', None)
-    area = request.GET.get('profile', None)
+    # university = request.GET.get('org', None)
 
-    All_Faculties = Faculty.objects.all()
+    loc = request.GET.get('loc',None)
+    profile = request.GET.get('profile', None)
+    mode = request.GET.get('mode',None)
 
     all_interns = Intern.objects.all()
 
-    if query:
-        interns = (Intern.objects.filter(Q(name_of_org__icontains=query)) | 
-                     Intern.objects.filter(Q(profiles__icontains=query)) | 
-                     Intern.objects.filter(Q(location__icontains=query)) | 
-                     Intern.objects.filter(Q(job_description__icontains=query))) 
-    else:
-        interns = all_interns
-    if university and area:
-        interns = all_interns.filter(name_of_org__icontains=unquote_plus(university),
-                                     profiles__icontains=unquote_plus(area))
-    elif university:
-        interns = all_interns.filter(name_of_org__icontains=unquote_plus(university))
-    elif area:
-        interns = all_interns.filter(profiles__icontains=unquote_plus(area))
+
+    if loc and profile and mode:
+        interns = all_interns.filter(location__icontains=unquote_plus(loc),
+                                    profiles__icontains=unquote_plus(profile),
+                                    work_mode__icontains=unquote_plus(mode))
+    elif loc and profile:
+        interns = all_interns.filter(location__icontains=unquote_plus(loc),
+                                    profiles__icontains=unquote_plus(profile))
+    elif loc and mode:
+        interns = all_interns.filter(location__icontains=unquote_plus(loc),
+                                    work_mode__icontains=unquote_plus(mode))
+    elif profile and mode:
+        interns = all_interns.filter(profiles__icontains=unquote_plus(profile),
+                                    work_mode__icontains=unquote_plus(mode))
+    elif loc:
+        interns = all_interns.filter(location__icontains=unquote_plus(loc))
+    elif profile:
+        interns = all_interns.filter(profiles__icontains=unquote_plus(profile))
+    elif mode:
+        interns = all_interns.filter(work_mode__icontains=unquote_plus(mode))
     else:
         interns = all_interns
 
@@ -62,10 +68,25 @@ def search(request):
     all_profiles = sorted(all_profiles)
     all_orgs = sorted(all_orgs)
 
+
+    locs = set()
+    for intern in all_interns:
+        loc = getattr(intern,'location')
+        loc = loc.capitalize()
+        locs.add(loc)
+
+    all_locs=sorted(locs)
+
+    modes = set()
+    for intern in all_interns:
+        mode = getattr(intern,'work_mode')
+        modes.add(mode)
     context = {
-        'Faculties': interns,
-        'research_areas': all_profiles,
+        'Faculties': interns[:3],
+        'profiles': all_profiles,
         'colleges': all_orgs,
+        'locs':all_locs,
+        'modes':modes
     }
 
     return render(request, 'faculty/search.html', context)
@@ -101,15 +122,20 @@ def home(request):
     locs = set()
     for intern in interns:
         loc = getattr(intern,'location')
+        loc = loc.capitalize()
         locs.add(loc)
-
     all_locs=sorted(locs)
 
+    modes = set()
+    for intern in interns:
+        mode = getattr(intern,'work_mode')
+        modes.add(mode)
     context = {
         'Faculties': interns[:3],
-        'research_areas': all_profiles,
+        'profiles': all_profiles,
         'colleges': all_orgs,
-        'locs':locs
+        'locs':all_locs,
+        'modes':modes
     }
     
     return render(request, 'faculty/home.html', context)
