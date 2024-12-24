@@ -15,6 +15,7 @@ urlpatterns = [
     path('undergraduate-physics-research-internships/', views.blog5, name='undergraduate-physics-research-internships'),
     path('search/', views.search, name='search'),
     path('intern/<slug:name_of_org>/', views.professor, name='professor'),
+    path('hire/', views.hire, name='search'),
 ] 
 
 if settings.DEBUG:

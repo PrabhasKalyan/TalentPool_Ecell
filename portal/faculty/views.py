@@ -141,3 +141,5 @@ def home(request):
     return render(request, 'faculty/home.html', context)
 
 
+def hire(request):
+    return render(request,'faculty/hire.html')
